@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+// Transporter abstracts the RPC transport; inject a fake in tests.
+type Transporter interface {
+	Call(peerID int, method string, args any, reply any) bool
+}
+
 type State int
 
 const (
@@ -31,6 +36,7 @@ type Config struct {
 	Peers         []string
 	StateFilePath string
 	ApplyCh       chan ApplyMsg
+	Transport     Transporter // optional; uses TCP transport if nil
 }
 
 type Raft struct {
@@ -64,7 +70,7 @@ type Raft struct {
 	persistPath string
 
 	// Transport
-	transport *Transport
+	transport Transporter
 
 	// Stop
 	stopCh chan struct{}
@@ -85,7 +91,11 @@ func NewRaft(cfg Config) *Raft {
 	// Log is 1-indexed for convenience; log[0] is a dummy entry.
 	r.log = []LogEntry{{Term: 0, Command: nil}}
 
-	r.transport = NewTransport(cfg.ID, cfg.Peers)
+	if cfg.Transport != nil {
+		r.transport = cfg.Transport
+	} else {
+		r.transport = NewTransport(cfg.ID, cfg.Peers)
+	}
 
 	// Restore persisted state if exists.
 	r.restore()
