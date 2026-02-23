@@ -1,3 +1,3 @@
-module github.com/nmrastogi/go-raft
+module github.com/nmrastogi/distributed_system_go
 
 go 1.25.5
