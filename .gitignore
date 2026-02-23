@@ -1,2 +1,3 @@
 go-raft/node
-go-raft/data/*
+go-raft/data/
+
