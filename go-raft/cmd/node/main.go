@@ -88,9 +88,9 @@ func main() {
 	server := rpc.NewServer()
 	if err := server.RegisterName("Raft", r.RPC()); err != nil {
 		log.Fatal(err)
-		if err := server.RegisterName("Client", &ClientAPI{R: r, KV: kv}); err != nil {
-			log.Fatal(err)
-		}
+	}
+	if err := server.RegisterName("Client", &ClientAPI{R: r, KV: kv}); err != nil {
+		log.Fatal(err)
 	}
 
 	l, err := net.Listen("tcp", *addr)
