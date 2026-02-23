@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/nmrastogi/distributed_system_go/tree/master/go-raft/raft"
+	"github.com/nmrastogi/distributed_system_go/go-raft/raft"
 )
 
 func main() {
