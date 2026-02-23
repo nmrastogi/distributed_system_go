@@ -1,6 +1,7 @@
 package raft
 
 import (
+	"log"
 	"math/rand"
 	"time"
 )
@@ -74,6 +75,7 @@ func (r *Raft) startElection() {
 					r.state = Leader
 					r.initLeaderStateLocked()
 					r.electionReset = time.Now()
+					log.Printf("node %d became Leader (term %d)", r.id, r.currentTerm)
 				}
 			}
 		}(peerID)
